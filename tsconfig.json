@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "moduleResolution": "node",
+        "lib": [
+            "es2018"
+        ],
+        "allowJs": true,
+        "alwaysStrict": true,
+        "removeComments": true,
+        "outDir": "build",
+        "typeRoots": [
+            "node_modules/@types"
+        ]
+    },
+    "include": [
+        "app/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "tests"
+    ]
+}
