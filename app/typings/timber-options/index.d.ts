@@ -1,3 +1,3 @@
-declare interface ITimberOptions {
-    sort: ISortOptions;
+declare interface TimberOptions {
+    sort: SortOptions;
 }

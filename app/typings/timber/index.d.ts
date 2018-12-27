@@ -1,3 +1,3 @@
 declare class Timber {
-    public clean(options: ICleanOptions): Promise<void>;
+    public clean(options: CleanOptions): Promise<void>;
 }

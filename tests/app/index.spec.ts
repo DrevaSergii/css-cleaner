@@ -1,6 +1,6 @@
-import Timber from '../../build';
-import { describe, test } from 'mocha';
 import { expect } from 'chai';
+import { describe, test } from 'mocha';
+import Timber from '../../build';
 
 describe('App', () => {
     const timber = new Timber({
@@ -8,10 +8,10 @@ describe('App', () => {
             'properties-order': [
                 'position',
                 'top',
-                'left'
+                'left',
             ],
             'unspecified-properties-position': 'bottom',
-        }
+        },
     });
 
     test('', () => {
