@@ -28,10 +28,8 @@ class Controller {
         return rule;
     }
 
-    public clean(root: Root): Root {
-        root.nodes = root.nodes.map((rule: Rule) => this.discard(rule));
-
-        return root;
+    private clean(root: Root): void {
+        root.walkRules((rule: Rule) => this.discard(rule));
     }
 
     public export(): Plugin<any> {
