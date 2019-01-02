@@ -27,12 +27,12 @@ class Controller {
         return rule;
     }
 
-    private clean(root: postcss.Root): void {
+    private walk(root: postcss.Root): void {
         root.walkRules((rule: postcss.Rule) => this.discard(rule));
     }
 
     public export(): postcss.Plugin<any> {
-        return postcss.plugin(this.name, () => (root: postcss.Root) => this.clean(root));
+        return postcss.plugin(this.name, () => (root: postcss.Root) => this.walk(root));
     }
 }
 
