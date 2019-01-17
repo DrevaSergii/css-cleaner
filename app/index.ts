@@ -1,23 +1,35 @@
-import * as fs from 'fs';
-import * as postcss from 'postcss';
-import * as longhand from 'postcss-merge-longhand';
-import * as sorting from 'postcss-sorting';
-import * as discard from './plugins/discard-duplicates';
+import postcss, { AcceptedPlugin, LazyResult } from 'postcss';
+import longhand from 'postcss-merge-longhand';
+import sorting from 'postcss-sorting';
+import Reader from './modules/reader';
+import Writer from './modules/writer';
+import discard from './plugins/discard-duplicates';
 
-export default class implements Timber {
-    private readonly plugins: Array<postcss.Plugin<any>>;
+export default class {
+    private readonly plugins: AcceptedPlugin[];
+    private readonly reader: Reader;
+    private readonly writer: Writer;
 
-    constructor(options: TimberOptions) {
-        this.plugins = [discard, longhand, sorting(options ? options.sort : {})];
+    public constructor(options: TimberOptions) {
+        this.reader = new Reader();
+        this.writer = new Writer();
+        this.plugins = [discard, longhand, sorting(options.sort)];
     }
 
-    public clean(options: CleanOptions): Promise<void> {
-        return new Promise((resolve, reject) => {
-            fs.promises.readFile(options.from, { encoding: 'utf8' })
-                .then((styles: string) => postcss(this.plugins).process(styles, options))
-                .then((result: postcss.Result) => fs.promises.writeFile(options.to || options.from, result.css))
-                .then(() => resolve())
-                .catch((error: any) => reject(error));
+    private stylesReducer(documents: Document[]): Document[] {
+        return documents.map((document: Document) => {
+            const result: LazyResult = postcss(this.plugins).process(document.style);
+
+            document.style = result.css;
+
+            return document;
         });
+    }
+
+    public clean(source: string): Promise<void> {
+        return this.reader
+            .read(source)
+            .then((documents: Document[]) => this.stylesReducer(documents))
+            .then((documents: Document[]) => this.writer.write(documents));
     }
 }

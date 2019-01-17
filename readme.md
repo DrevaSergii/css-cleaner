@@ -33,10 +33,7 @@ const timber = new Timber({
     },
 });
 
-timber.clean({
-    from: 'input.css',
-    to: 'output.css',
-})
+timber.clean('source.css')
     .then(() => console.log('Clean Success!'))
     .catch((error) => console.error(error));
 ```

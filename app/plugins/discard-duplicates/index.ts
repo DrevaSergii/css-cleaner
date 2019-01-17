@@ -1,17 +1,17 @@
-import * as postcss from 'postcss';
+import postcss, { ChildNode, Declaration, Plugin, Root, Rule } from 'postcss';
 
 class Controller {
     private readonly name: string;
 
-    constructor(name: string) {
+    public constructor(name: string) {
         this.name = name;
     }
 
-    private isPropExist(store: postcss.Declaration[], prop: string): boolean {
-        return store.some((declaration: postcss.Declaration) => declaration.prop === prop);
+    private isPropExist(store: Declaration[], prop: string): boolean {
+        return store.some((declaration: Declaration) => declaration.prop === prop);
     }
 
-    private reducer(store: postcss.Declaration[], declaration: postcss.Declaration): postcss.Declaration[] {
+    private reducer(store: Declaration[], declaration: Declaration): Declaration[] {
         if (!this.isPropExist(store, declaration.prop)) {
             store.unshift(declaration);
         }
@@ -19,21 +19,27 @@ class Controller {
         return store;
     }
 
-    private discard(rule: postcss.Rule): postcss.Rule {
-        rule.nodes = rule.nodes.reduceRight((store: postcss.Declaration[], declaration: postcss.Declaration) => {
-            return this.reducer(store, declaration);
-        }, []);
+    private isDeclaration(value: any): value is Declaration {
+        return typeof value === 'object' && value.hasOwnProperty('type') && value.type === 'decl';
+    }
+
+    private discard(rule: Rule): Rule {
+        if (typeof rule.nodes !== 'undefined') {
+            rule.nodes = rule.nodes.reduceRight((store: Declaration[], declaration: ChildNode) => {
+                return this.isDeclaration(declaration) ? this.reducer(store, declaration) : store;
+            }, []);
+        }
 
         return rule;
     }
 
-    private walk(root: postcss.Root): void {
-        root.walkRules((rule: postcss.Rule) => this.discard(rule));
+    private walk(root: Root): void {
+        root.walkRules((rule: Rule) => this.discard(rule));
     }
 
-    public export(): postcss.Plugin<any> {
-        return postcss.plugin(this.name, () => (root: postcss.Root) => this.walk(root));
+    public export(): Plugin<any> {
+        return postcss.plugin(this.name, () => (root: Root) => this.walk(root));
     }
 }
 
-module.exports = new Controller('discard-duplicates').export();
+export default new Controller('discard-duplicates').export();

@@ -10,39 +10,10 @@
     },
     "jsRules": {},
     "rules": {
-        "quotemark": [
-            true,
-            "single"
-        ],
-        "semicolon": [
-            true
-        ],
-        "interface-name": [
-            true,
-            "never-prefix"
-        ],
-        "member-ordering": [
-            true,
-            {
-                "order": [
-                    "private-static-field",
-                    "private-static-method",
-                    "private-instance-field",
-                    "private-constructor",
-                    "protected-instance-field",
-                    "protected-constructor",
-                    "public-instance-field",
-                    "public-constructor",
-                    "private-instance-method",
-                    "protected-static-field",
-                    "protected-static-method",
-                    "protected-instance-method",
-                    "public-static-field",
-                    "public-static-method",
-                    "public-instance-method"
-                ]
-            }
-        ]
+        "quotemark": [true, "single"],
+        "semicolon": true,
+        "member-ordering": false,
+        "interface-name": false
     },
     "rulesDirectory": []
 }

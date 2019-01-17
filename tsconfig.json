@@ -1,24 +1,29 @@
 {
     "compilerOptions": {
         "module": "commonjs",
+        "esModuleInterop": true,
         "target": "es2018",
         "moduleResolution": "node",
         "lib": [
             "es2018"
         ],
         "allowJs": true,
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "noImplicitThis": true,
         "alwaysStrict": true,
         "removeComments": true,
         "outDir": "build",
         "typeRoots": [
-            "node_modules/@types"
+            "./node_modules/@types"
         ]
     },
     "include": [
-        "app/**/*.ts"
+        "./app/**/*.ts"
     ],
     "exclude": [
-        "node_modules",
-        "tests"
+        "./node_modules/",
+        "./tests/"
     ]
 }
