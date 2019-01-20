@@ -27,8 +27,7 @@ export default class {
     }
 
     public clean(source: string): Promise<void> {
-        return this.reader
-            .read(source)
+        return this.reader.read(source)
             .then((documents: Document[]) => this.stylesReducer(documents))
             .then((documents: Document[]) => this.writer.write(documents));
     }

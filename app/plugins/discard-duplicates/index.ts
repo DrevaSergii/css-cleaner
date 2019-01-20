@@ -7,26 +7,26 @@ class Controller {
         this.name = name;
     }
 
+    private isDeclaration(value: any): value is Declaration {
+        return typeof value === 'object' && value.hasOwnProperty('type') && value.type === 'decl';
+    }
+
     private isPropExist(store: Declaration[], prop: string): boolean {
         return store.some((declaration: Declaration) => declaration.prop === prop);
     }
 
-    private reducer(store: Declaration[], declaration: Declaration): Declaration[] {
-        if (!this.isPropExist(store, declaration.prop)) {
+    private reducer(store: Declaration[], declaration: ChildNode): Declaration[] {
+        if (this.isDeclaration(declaration) && !this.isPropExist(store, declaration.prop)) {
             store.unshift(declaration);
         }
 
         return store;
     }
 
-    private isDeclaration(value: any): value is Declaration {
-        return typeof value === 'object' && value.hasOwnProperty('type') && value.type === 'decl';
-    }
-
     private discard(rule: Rule): Rule {
-        if (typeof rule.nodes !== 'undefined') {
+        if (rule.nodes) {
             rule.nodes = rule.nodes.reduceRight((store: Declaration[], declaration: ChildNode) => {
-                return this.isDeclaration(declaration) ? this.reducer(store, declaration) : store;
+                return this.reducer(store, declaration);
             }, []);
         }
 
