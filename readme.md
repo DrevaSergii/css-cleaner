@@ -39,8 +39,6 @@ cleaner.clean('source.css')
 ```
 
 ### Options
-The plugin has no default options. Everything is disabled by default.
-
 Common options:
 * [`sort`](https://www.npmjs.com/package/postcss-sorting): order rules.
 
