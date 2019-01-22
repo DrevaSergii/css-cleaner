@@ -9,8 +9,7 @@
         "node": ">=10.0.0"
     },
     "scripts": {
-        "build:development": "gulp development",
-        "build:production": "gulp production",
+        "build": "tsc",
         "lint": "tslint ./app/**/*.ts",
         "prettier": "prettier --write ./app/**/*.ts",
         "test": "mocha -r ts-node/register ./tests/**/*.spec.ts"
@@ -21,9 +20,6 @@
         "@types/mocha": "^5.2.5",
         "@types/node": "^10.12.18",
         "chai": "^4.2.0",
-        "gulp": "^4.0.0",
-        "gulp-typescript": "^5.0.0",
-        "gulp-uglify-es": "^1.0.4",
         "mocha": "^5.2.0",
         "prettier": "^1.15.3",
         "ts-node": "^7.0.1",

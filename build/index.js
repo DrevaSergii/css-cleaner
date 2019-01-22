@@ -1,1 +1,31 @@
-"use strict";var __importDefault=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(exports,"__esModule",{value:!0});const postcss_1=__importDefault(require("postcss")),postcss_merge_longhand_1=__importDefault(require("postcss-merge-longhand")),postcss_sorting_1=__importDefault(require("postcss-sorting")),reader_1=__importDefault(require("./modules/reader")),writer_1=__importDefault(require("./modules/writer")),discard_duplicates_1=__importDefault(require("./plugins/discard-duplicates"));class default_1{constructor(e){this.reader=new reader_1.default,this.writer=new writer_1.default,this.plugins=[discard_duplicates_1.default,postcss_merge_longhand_1.default,postcss_sorting_1.default(e.sort)]}stylesReducer(e){return e.map(e=>{const t=postcss_1.default(this.plugins).process(e.style);return e.style=t.css,e})}clean(e){return this.reader.read(e).then(e=>this.stylesReducer(e)).then(e=>this.writer.write(e))}}exports.default=default_1;
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const postcss_1 = __importDefault(require("postcss"));
+const postcss_merge_longhand_1 = __importDefault(require("postcss-merge-longhand"));
+const postcss_sorting_1 = __importDefault(require("postcss-sorting"));
+const reader_1 = __importDefault(require("./modules/reader"));
+const writer_1 = __importDefault(require("./modules/writer"));
+const discard_duplicates_1 = __importDefault(require("./plugins/discard-duplicates"));
+class default_1 {
+    constructor(options) {
+        this.reader = new reader_1.default();
+        this.writer = new writer_1.default();
+        this.plugins = [discard_duplicates_1.default, postcss_merge_longhand_1.default, postcss_sorting_1.default(options.sort)];
+    }
+    stylesReducer(documents) {
+        return documents.map((document) => {
+            const result = postcss_1.default(this.plugins).process(document.style);
+            document.style = result.css;
+            return document;
+        });
+    }
+    clean(source) {
+        return this.reader.read(source)
+            .then((documents) => this.stylesReducer(documents))
+            .then((documents) => this.writer.write(documents));
+    }
+}
+exports.default = default_1;

@@ -33,15 +33,15 @@ mocha.describe('Read module', () => {
                 .then(() => reader.read(actual.route))
                 .then((documents: Document[]) => chai.assert.deepEqual(documents, expect))
                 .then(() => extra.remove(path.dirname(actual.route)))
-                .catch((error) => chai.assert.isNull(error));
+                .catch((error: Error) => chai.assert.isNull(error));
         });
 
         mocha.test('should throw error if file is undefined', () => {
             const source: string = 'undefined';
 
             reader.read(source)
-                .then((document) => chai.assert.isNull(document))
-                .catch((error) => chai.assert.isOk(error));
+                .then((document: Document[]) => chai.assert.isNull(document))
+                .catch((error: Error) => chai.assert.isOk(error));
         });
 
         mocha.test('should return code if files are .css', () => {
@@ -67,7 +67,7 @@ mocha.describe('Read module', () => {
                     .then(() => reader.read(path.dirname(route)))
                     .then((documents: Document[]) => chai.assert.deepEqual(documents, expect))
                     .then(() => extra.remove(path.dirname(route)))
-                    .catch((error) => chai.assert.isNull(error));
+                    .catch((error: Error) => chai.assert.isNull(error));
             });
         });
 
@@ -98,7 +98,7 @@ mocha.describe('Read module', () => {
                     .then(() => reader.read(path.dirname(route)))
                     .then((documents: Document[]) => chai.assert.deepEqual(documents, expect))
                     .then(() => extra.remove(path.dirname(route)))
-                    .catch((error) => chai.assert.isNull(error));
+                    .catch((error: Error) => chai.assert.isNull(error));
             });
         });
 
@@ -109,7 +109,7 @@ mocha.describe('Read module', () => {
 
             reader.read(actual.route)
                 .then((documents: Document[]) => chai.assert.isNull(documents))
-                .catch((error) => chai.assert.isOk(error));
+                .catch((error: Error) => chai.assert.isOk(error));
         });
     });
 });

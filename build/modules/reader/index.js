@@ -1,1 +1,64 @@
-"use strict";var __importDefault=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(exports,"__esModule",{value:!0});const fs_extra_1=__importDefault(require("fs-extra")),path_1=__importDefault(require("path"));class default_1{isCss(e){return".css"===path_1.default.extname(e)}getCssRoute(e){return this.isCss(e)?path_1.default.resolve(e):null}reduceCssRoutes(e){return e.reduce((e,t)=>{const s=this.getCssRoute(t);return s&&e.push(s),e},[])}async getCssRoutes(e){const t=(await fs_extra_1.default.readdir(e)).map(t=>path_1.default.join(e,t)),s=this.reduceCssRoutes(t);return s.length?s:null}getReadablePromises(e){return e.map(e=>fs_extra_1.default.readFile(e,{encoding:"utf8"}))}async getDocument(e){const t=this.getCssRoute(e);if(t){return[{route:t,style:await fs_extra_1.default.readFile(t,{encoding:"utf8"})}]}throw new TypeError(`No file with '.css' extension ${e}`)}async getDocuments(e){const t=await this.getCssRoutes(e);if(Array.isArray(t)&&t.length){const e=this.getReadablePromises(t);return(await Promise.all(e)).map((e,s)=>({route:t[s],style:e}))}throw new TypeError(`No file with '.css' extension ${e}`)}async read(e){const t=path_1.default.resolve(e),s=await fs_extra_1.default.pathExists(t)&&await fs_extra_1.default.stat(t);if(s&&s.isFile())return this.getDocument(t);if(s&&s.isDirectory())return this.getDocuments(t);throw new TypeError(`No such file or directory ${t}`)}}exports.default=default_1;
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const fs_extra_1 = __importDefault(require("fs-extra"));
+const path_1 = __importDefault(require("path"));
+class default_1 {
+    isCss(routes) {
+        return path_1.default.extname(routes) === '.css';
+    }
+    getCssRoute(source) {
+        return this.isCss(source) ? path_1.default.resolve(source) : null;
+    }
+    reduceCssRoutes(source) {
+        return source.reduce((store, route) => {
+            const cssRoute = this.getCssRoute(route);
+            if (cssRoute) {
+                store.push(cssRoute);
+            }
+            return store;
+        }, []);
+    }
+    async getCssRoutes(source) {
+        const dirRoutes = await fs_extra_1.default.readdir(source);
+        const union = dirRoutes.map((route) => path_1.default.join(source, route));
+        const cssRoutes = this.reduceCssRoutes(union);
+        return cssRoutes.length ? cssRoutes : null;
+    }
+    getReadablePromises(routes) {
+        return routes.map((route) => fs_extra_1.default.readFile(route, { encoding: 'utf8' }));
+    }
+    async getDocument(source) {
+        const route = this.getCssRoute(source);
+        if (route) {
+            const style = await fs_extra_1.default.readFile(route, { encoding: 'utf8' });
+            return [{ route, style }];
+        }
+        throw new TypeError(`No file with '.css' extension ${source}`);
+    }
+    async getDocuments(source) {
+        const routes = await this.getCssRoutes(source);
+        if (Array.isArray(routes) && routes.length) {
+            const promises = this.getReadablePromises(routes);
+            const styles = await Promise.all(promises);
+            return styles.map((style, index) => {
+                return { route: routes[index], style };
+            });
+        }
+        throw new TypeError(`No file with '.css' extension ${source}`);
+    }
+    async read(source) {
+        const route = path_1.default.resolve(source);
+        const stat = (await fs_extra_1.default.pathExists(route)) && (await fs_extra_1.default.stat(route));
+        if (stat && stat.isFile()) {
+            return this.getDocument(route);
+        }
+        else if (stat && stat.isDirectory()) {
+            return this.getDocuments(route);
+        }
+        throw new TypeError(`No such file or directory ${route}`);
+    }
+}
+exports.default = default_1;

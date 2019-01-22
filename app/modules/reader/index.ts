@@ -1,7 +1,7 @@
 import extra, { Stats } from 'fs-extra';
 import path from 'path';
 
-export default class implements Reader {
+export default class {
     private isCss(routes: string): boolean {
         return path.extname(routes) === '.css';
     }

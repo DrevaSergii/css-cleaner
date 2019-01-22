@@ -1,6 +1,6 @@
 import extra from 'fs-extra';
 
-export default class implements Writer {
+export default class {
     private getPromiseFiles(documents: Document[]): Array<Promise<void>> {
         return documents.map((document: Document) => extra.outputFile(document.route, document.style));
     }
