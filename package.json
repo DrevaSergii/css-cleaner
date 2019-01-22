@@ -1,6 +1,6 @@
 {
     "name": "css-cleaner",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "main": "build/index.js",
     "repository": "git@github.com:DrevaSergii/timber.git",
     "author": "s.dreva <drevasergii@gmail.com>",
