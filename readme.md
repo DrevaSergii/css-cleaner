@@ -1,4 +1,4 @@
-# Timber
+# Css cleaner
 
 Timber is a tool for clean up styles.
 
@@ -7,7 +7,7 @@ Timber is a tool for clean up styles.
 Install as a dependency.
 
 ```
-$ npm install --save https://github.com/DrevaSergii/timber.git#master
+$ npm install --save https://github.com/DrevaSergii/css-cleaner.git#master
 ```
 
 ### Development
@@ -15,7 +15,7 @@ $ npm install --save https://github.com/DrevaSergii/timber.git#master
 Open your favorite Terminal and run this commands to start the program.
 
 ```
-$ cd timber
+$ cd css-cleaner
 $ npm install
 $ npm run build
 $ npm run test
@@ -26,14 +26,14 @@ $ npm run test
 Example:
 
 ```javascript
-const Timber = require('timber');
-const timber = new Timber({
+const Cleaner = require('css-cleaner');
+const cleaner = new Cleaner({
     sort: {
         ...
     },
 });
 
-timber.clean('source.css')
+cleaner.clean('source.css')
     .then(() => console.log('Clean Success!'))
     .catch((error) => console.error(error));
 ```
