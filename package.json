@@ -5,6 +5,7 @@
     "repository": "git@github.com:DrevaSergii/timber.git",
     "author": "s.dreva <drevasergii@gmail.com>",
     "license": "MIT",
+    "types": "app/typings/css-cleaner/index.d.ts",
     "engines": {
         "node": ">=10.0.0"
     },

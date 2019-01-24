@@ -1,6 +1,7 @@
 import extra from 'fs-extra';
+import { Writer, Document } from '../../typings/css-cleaner';
 
-export default class {
+export default class implements Writer {
     private getPromiseFiles(documents: Document[]): Array<Promise<void>> {
         return documents.map((document: Document) => extra.outputFile(document.route, document.style));
     }

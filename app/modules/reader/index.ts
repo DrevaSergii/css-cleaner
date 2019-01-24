@@ -1,7 +1,8 @@
 import extra, { Stats } from 'fs-extra';
 import path from 'path';
+import { Reader, Document } from '../../typings/css-cleaner';
 
-export default class {
+export default class implements Reader {
     private isCss(routes: string): boolean {
         return path.extname(routes) === '.css';
     }

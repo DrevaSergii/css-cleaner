@@ -4,8 +4,9 @@ import sorting from 'postcss-sorting';
 import Reader from './modules/reader';
 import Writer from './modules/writer';
 import discard from './plugins/discard-duplicates';
+import { CssCleaner, TimberOptions, Document } from './typings/css-cleaner';
 
-export default class {
+export default class implements CssCleaner {
     private readonly plugins: AcceptedPlugin[];
     private readonly reader: Reader;
     private readonly writer: Writer;
